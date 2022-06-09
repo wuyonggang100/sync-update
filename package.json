@@ -1,6 +1,6 @@
 {
   "name": "sync-update",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.js",
   "author": "wuyonggang100 <408727759@qq.com>",
   "dependencies": {

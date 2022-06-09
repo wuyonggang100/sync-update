@@ -33,7 +33,7 @@ const copyDir = function (srcDir, distDir) {
 //     console.log(`copy ${src} success!`);
 //   });
 // };
-function copyFile(srcPath, tarPath, cb) {
+function copyFile(srcPath, distPath, cb) {
   var rs = fs.createReadStream(srcPath);
   rs.on("error", function (err) {
     if (err) {
@@ -42,10 +42,10 @@ function copyFile(srcPath, tarPath, cb) {
     cb && cb(err);
   });
 
-  var ws = fs.createWriteStream(tarPath);
+  var ws = fs.createWriteStream(distPath);
   ws.on("error", function (err) {
     if (err) {
-      console.log("write error", tarPath);
+      console.log("write error===distPath", distPath);
     }
     cb && cb(err);
   });
@@ -60,17 +60,14 @@ function copyFile(srcPath, tarPath, cb) {
   console.log("复制文件完成", srcPath);
 }
 
-const srcDir = _path.resolve(__dirname, "./src");
-const distDir = _path.resolve(__dirname, "./target");
-
 const getRelativePath = (from, to) => _path.relative(from, to);
 const removeFile = (filePath) => fse.remove(filePath);
 const removeDir = (dirPath) => fse.remove(dirPath);
-const writeFile = function (path, distDir) {
+const writeFile = function (path, srcDir, distDir) {
   const relativePath = getRelativePath(srcDir, path);
   const targetPath = _path.join(distDir, relativePath);
   // console.log("path---", path);
-  // console.log("relativePath---", relativePath);
+  // console.log("srcDir---", srcDir);
   // console.log("targetPath---", targetPath);
   // 检查当前目录中是否存在该文件
   // fse.pathExists(targetPath).then((exists) => {
@@ -107,6 +104,10 @@ const writeFile = function (path, distDir) {
 };
 
 function syncUpdate(srcDir, distDir) {
+  // console.log("---src", srcDir);
+  // console.log("---distDir", distDir);
+  // srcDir = srcDir;
+  // distDir = distDir;
   var watcher = chokidar.watch(srcDir, {
     ignored: /[\/\\]\./,
     persistent: true,
@@ -114,7 +115,7 @@ function syncUpdate(srcDir, distDir) {
 
   watcher
     .on("add", function (path) {
-      writeFile(path, distDir);
+      writeFile(path, srcDir, distDir);
     })
     .on("addDir", function (path) {
       log("Directory", path, "has been added");
@@ -128,7 +129,7 @@ function syncUpdate(srcDir, distDir) {
     })
     .on("change", function (path) {
       log("File", path, "has been changed");
-      writeFile(path, distDir);
+      writeFile(path, srcDir, distDir);
     })
     .on("unlink", function (path) {
       log("File", path, "has been removed");
