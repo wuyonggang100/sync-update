@@ -2,7 +2,7 @@
 
 ```sh
 npm i modemon -g
-npm i sync-uodate
+npm i sync-update
 ```
 
 # use
