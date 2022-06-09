@@ -1,0 +1,12 @@
+{
+  "name": "sync-update",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "wuyonggang100 <408727759@qq.com>",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "fs-extra": "^10.1.0",
+    "md5": "^2.3.0"
+  },
+  "license": "MIT"
+}
